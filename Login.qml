@@ -46,7 +46,7 @@ Item {
         Material.background: "#ED3237"
         Material.foreground: "white"
         font.pixelSize: 20
-        height: 60
+        height: parent.height*0.1
         onClicked: {
             stackView.push(telaPedido)
         }

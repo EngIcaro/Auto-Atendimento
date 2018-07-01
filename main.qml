@@ -4,8 +4,8 @@ import QtQuick.Controls 2.1
 ApplicationWindow {
     id: root
     visible: true
-    width: 840
-    height: 480
+    width: 1920
+    height: 1200
     title: qsTr("Auto Atendimento")
 
     StackView {
