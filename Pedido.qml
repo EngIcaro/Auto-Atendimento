@@ -5,8 +5,11 @@ import QtQuick.Controls.Material 2.1
 Item {
     height: root.height
     width: root.width
-    property var pedidofinal: ""
-    property var auxvalor: ""
+    property var pedidofinal1: ""
+    property var pedidofinal2: ""
+    property var auxvalor1: ""
+    property var auxvalor2: ""
+    property var valorFinal: 0
     ListModel{
         id: contactModel
         ListElement { produto: "Executivo de Galeto"; valor: "13.00"; tipo: 1; }
@@ -42,10 +45,10 @@ Item {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: {
-                    pedidofinal = pedidofinal + produto + "\n"
-                    auxvalor = valor
-                    console.log(pedidofinal)
                     if(tipo === 1){
+                        pedidofinal1 = pedidofinal1 + produto + "\n"
+                        auxvalor1 = valor
+                        //console.log(pedidofinal1)
                         if(produto == "Executivo de Galeto"){
                             textProteinaPedido1.text = "Escolha a Parte do Galeto"
                             buttonCoxa.text = "Coxa e Sobre-Coxa"
@@ -62,6 +65,8 @@ Item {
                         popUpPedido1.open()
                     }
                     else if(tipo == 2){
+                        pedidofinal2 = pedidofinal2 + produto
+                        auxvalor2 = valor
                         popUpPedido2.open()
                     }
 
@@ -85,8 +90,9 @@ Item {
             clip: true
             closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
             onClosed: {
-                pedidofinal = ""
-                auxvalor = ""
+                pedidofinal1 = ""
+                auxvalor1 = ""
+
                 flickableScroll.position = 0.0
             }
 
@@ -183,6 +189,7 @@ Item {
                         id: buttonCoxa
                         height: 35
                         font.family: "Roboto"
+                        checked: true
                         text: "Coxa e Sobre-Coxa"
 
                     }
@@ -273,11 +280,11 @@ Item {
                         if(buttonFeijaoTropeiro.checked){
                             aux++
                             if(aux == 4){
-                                pedidofinal = pedidofinal + "F.Tropeiro" + "\n"
+                                pedidofinal1 = pedidofinal1 + "F.Tropeiro" + "\n"
                                 aux = 0
                             }
                             else{
-                                pedidofinal = pedidofinal + "F.Tropeiro" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "F.Tropeiro" + "\\ "
                             }
 
 
@@ -285,11 +292,11 @@ Item {
                         if(buttonFeijaoCaseiro.checked){
                             aux++
                             if(aux==4){
-                                pedidofinal = pedidofinal + "F.Caseiro" + "\n"
+                                pedidofinal1 = pedidofinal1 + "F.Caseiro" + "\n"
                                 aux = 0
                             }
                             else{
-                                pedidofinal = pedidofinal + "F.Caseiro" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "F.Caseiro" + "\\ "
 
                             }
 
@@ -298,11 +305,11 @@ Item {
                         if(buttonSemFeijao.checked){
                             aux++
                             if(aux==4){
-                                pedidofinal = pedidofinal + "Sem Feijao" + "\n"
+                                pedidofinal1 = pedidofinal1 + "Sem Feijao" + "\n"
                                 aux = 0
                             }
                             else{
-                                pedidofinal = pedidofinal + "Sem Feijao" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "Sem Feijao" + "\\ "
 
                             }
 
@@ -310,22 +317,22 @@ Item {
                         if(buttonMaionese.checked){
                             aux++
                             if(aux==4){
-                                pedidofinal = pedidofinal + buttonMaionese.text + "\n"
+                                pedidofinal1 = pedidofinal1 + buttonMaionese.text + "\n"
                                 aux = 0
                             }
                             else{
-                                pedidofinal = pedidofinal + buttonMaionese.text + "\\ "
+                                pedidofinal1 = pedidofinal1 + buttonMaionese.text + "\\ "
                             }
 
                         }
                         if(buttonPure.checked){
                             aux++
                             if(aux==4){
-                                pedidofinal = pedidofinal + buttonPure.text + "\n"
+                                pedidofinal1 = pedidofinal1 + buttonPure.text + "\n"
                                 aux = 0
                             }
                             else{
-                                pedidofinal = pedidofinal + buttonPure.text + "\\ "
+                                pedidofinal1 = pedidofinal1 + buttonPure.text + "\\ "
 
                             }
 
@@ -333,11 +340,11 @@ Item {
                         if(buttonMaionesePure.checked){
                             aux++
                             if(aux==4){
-                                pedidofinal = pedidofinal + "SemMaioPure" + "\n"
+                                pedidofinal1 = pedidofinal1 + "SemMaioPure" + "\n"
                                 aux=0
                             }
                             else{
-                                pedidofinal = pedidofinal + "SemMaioPure" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "SemMaioPure" + "\\ "
 
                             }
 
@@ -345,25 +352,42 @@ Item {
                         if(buttonCoxa.checked){
                             aux++
                             if(aux==4){
-                                pedidofinal = pedidofinal + "Coxa" + "\n"
+                                if(buttonCoxa.text == "Bem Passada"){
+                                    pedidofinal1 = pedidofinal1 + "Bem Passada" + "\n"
+                                }
+                                else{
+                                    pedidofinal1 = pedidofinal1 + "Coxa" + "\n"
+                                }
                                 aux=0
                             }
                             else{
-                                pedidofinal = pedidofinal + "Coxa" + "\\ "
-
+                                if(buttonCoxa.text == "Bem Passada"){
+                                    pedidofinal1 = pedidofinal1 + "Bem Passada" + "\\"
+                                }
+                                else{
+                                    pedidofinal1 = pedidofinal1 + "Coxa" + "\\ "
+                                }
                             }
 
                         }
                         if(buttonPeito.checked){
                             aux++
                             if(aux==4){
-
-                                pedidofinal = pedidofinal + "Peito" + "\n"
+                                if(buttonPeito.text == "Ao Ponto"){
+                                    pedidofinal1 = pedidofinal1 + "Ao Ponto" + "\n"
+                                }
+                                else{
+                                    pedidofinal1 = pedidofinal1 + "Peito" + "\n"
+                                }
                                 aux=0
                             }
                             else{
-                                pedidofinal = pedidofinal + "Peito" + "\\ "
-
+                                if(buttonPeito.text == "Ao Ponto"){
+                                    pedidofinal1 = pedidofinal1 + "Ao Ponto" + "\\"
+                                }
+                                else{
+                                    pedidofinal1 = pedidofinal1 + "Peito" + "\\"
+                                }
                             }
 
                         }
@@ -371,11 +395,11 @@ Item {
                             aux++
                             if(aux==4){
 
-                                pedidofinal = pedidofinal + "SemArroz" + "\n"
+                                pedidofinal1 = pedidofinal1 + "SemArroz" + "\n"
                                 aux=0
                             }
                             else{
-                                pedidofinal = pedidofinal + "SemArroz" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "SemArroz" + "\\ "
 
                             }
 
@@ -383,11 +407,11 @@ Item {
                         if(buttonSemFeijao.checked){
                             aux++
                             if(aux==4){
-                                pedidofinal = pedidofinal + "SemFeijao" + "\n"
+                                pedidofinal1 = pedidofinal1 + "SemFeijao" + "\n"
                                 aux=0
                             }
                             else{
-                                pedidofinal = pedidofinal + "SemFeijao" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "SemFeijao" + "\\ "
 
                             }
 
@@ -395,11 +419,11 @@ Item {
                         if(buttonSemFritas.checked){
                             aux++
                             if(aux==4){
-                                pedidofinal = pedidofinal + "SemFritas" + "\n"
+                                pedidofinal1 = pedidofinal1 + "SemFritas" + "\n"
                                 aux=0
                             }
                             else{
-                                pedidofinal = pedidofinal + "SemFritas" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "SemFritas" + "\\ "
 
                             }
 
@@ -408,10 +432,10 @@ Item {
                             aux++
                             if(aux==4){
                                 aux=0
-                                pedidofinal = pedidofinal + "SemMacarrao" + "\n"
+                                pedidofinal1 = pedidofinal1 + "SemMacarrao" + "\n"
                             }
                             else{
-                                pedidofinal = pedidofinal + "SemMacarrao" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "SemMacarrao" + "\\ "
 
                             }
 
@@ -420,10 +444,10 @@ Item {
                             aux++
                             if(aux==4){
                                 aux=0
-                                pedidofinal = pedidofinal + "+Arroz" + "\n"
+                                pedidofinal1 = pedidofinal1 + "+Arroz" + "\n"
                             }
                             else{
-                                pedidofinal = pedidofinal + "+Arroz" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "+Arroz" + "\\ "
 
                             }
 
@@ -431,11 +455,11 @@ Item {
                         if(buttonMaisFeijao.checked){
                             aux++
                             if(aux==4){
-                                pedidofinal = pedidofinal + "+Feijao" + "\n"
+                                pedidofinal1 = pedidofinal1 + "+Feijao" + "\n"
                                 aux=0
                             }
                             else{
-                                pedidofinal = pedidofinal + "+Feijao" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "+Feijao" + "\\ "
 
                             }
 
@@ -444,10 +468,10 @@ Item {
                             aux++
                             if(aux==4){
                                 aux=0
-                                pedidofinal = pedidofinal + "+Fritas" + "\n"
+                                pedidofinal1 = pedidofinal1 + "+Fritas" + "\n"
                             }
                             else{
-                                pedidofinal = pedidofinal + "+Fritas" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "+Fritas" + "\\ "
 
                             }
 
@@ -456,10 +480,10 @@ Item {
                             aux++
                             if(aux==4){
                                 aux =0
-                                pedidofinal = pedidofinal + "+Macarrao" + "\n"
+                                pedidofinal1 = pedidofinal1 + "+Macarrao" + "\n"
                             }
                             else{
-                                pedidofinal = pedidofinal + "+Macarrao" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "+Macarrao" + "\\ "
                             }
 
                         }
@@ -467,15 +491,15 @@ Item {
                             aux++
                             if(aux==4){
                                 aux=0
-                                pedidofinal = pedidofinal + "+MaioOuPure" + "\n"
+                                pedidofinal1 = pedidofinal1 + "+MaioOuPure" + "\n"
                             }
                             else{
-                                pedidofinal = pedidofinal + "+MaioOuPure" + "\\ "
+                                pedidofinal1 = pedidofinal1 + "+MaioOuPure" + "\\ "
 
                             }
 
                         }
-                        listResultado.model.append({textResultado: pedidofinal, valorResultado: auxvalor})
+                        listResultado.model.append({textResultado: pedidofinal1, valorResultado: auxvalor1})
                         //console.log(auxIndex)
                         buttonFeijaoTropeiro.checked = true
                         buttonMaisMaionese.checked = false
@@ -489,26 +513,88 @@ Item {
                         buttonSemArroz.checked = false
                         buttonFeijaoCaseiro.checked = false
                         buttonPeito.checked = false
-                        buttonCoxa.checked = false
+                        buttonCoxa.checked = true
                         buttonMaionesePure.checked = false
                         buttonPure.checked = false
                         buttonMaionese.checked = true
                         buttonSemFeijao.checked = false
+                        valorFinal = valorFinal + parseFloat(auxvalor1)
                         popUpPedido1.close()
-                        pedidofinal = ""
+                        pedidofinal1 = ""
 
                     }
                 }
             }
         }
-        Popup{
-            id: popUpPedido2
-            height: parent.height
-            width: parent.width
-            modal: true
-            focus: true
-            closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+        Rectangle{
+            id: recPopUp2
+            height: parent.height*0.6
+            width: parent.width*0.6
+            anchors.centerIn: parent
 
+            Popup{
+                id: popUpPedido2
+                height: parent.height
+                width: parent.width
+                modal: true
+                focus: true
+                closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+                onClosed: {
+                    pedidofinal2 = ""
+                    auxvalor2 = ""
+                }
+
+                Column{
+                    id: columnPedido2
+                    anchors.centerIn: parent
+                    spacing: parent.height*0.07
+
+                    Label{
+                        id: labelPedido2
+                        text: "Escolha a quantidade"
+                        font.family: "Roboto"
+                        font.pixelSize: 20
+                    }
+
+                    SpinBox{
+                        id: spinPedido2
+                        focusReason: Qt.MouseFocusReason
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: popUpPedido2.width*0.4
+                    }
+                    Button {
+                        id: finalizarButtonPedido2
+                        //anchors.rightMargin: 20
+                        //height: paneResultado.height *0.15
+                        width: popUpPedido2.width*0.4
+                        text: "Finalizar"
+                        font.family: "Roboto"
+                        focus: true
+                        Material.background: "#4CAF50"
+                        Material.foreground: "white"
+                        font.pixelSize: 20
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        onClicked: {
+                            if(spinPedido2.value != 0){
+                                pedidofinal2 = spinPedido2.value + "x " + pedidofinal2
+                                var aux1 = 0
+                                var aux2 = 0
+                                aux1 = parseFloat(auxvalor2)
+                                aux2 = parseFloat(spinPedido2.value)
+                                aux1 = aux1 * aux2
+                                auxvalor2 = aux1.toString()
+                                auxvalor2 = auxvalor2 + ".00"
+                                listResultado.model.append({textResultado: pedidofinal2, valorResultado: auxvalor2})
+                                spinPedido2.value = 0
+                                valorFinal = valorFinal + aux1
+                                popUpPedido2.close()
+                                pedidofinal2 = ""
+                            }
+                        }
+                    }
+                }
+
+            }
         }
     }
 
@@ -572,109 +658,136 @@ Item {
             //anchors.leftMargin: 3
             //anchors.top: panePedido.top
             Material.elevation: 13
+            Rectangle{
+                id: recPaneResultado
+                height: parent.height * 0.7
+                width: parent.width
+                //border.color: "black"
+                clip: true
 
-            ListView{
-                id: listResultado
-                anchors.fill: parent
-                //anchors.top: paneResultado.top
-                //  width: paneResultado.width
-                //anchors.bottom: finalizarButton.top
-                model: ListModel{}
-                spacing: 2
-                delegate: Rectangle{
-                  //  property int indexx: 0
-                    id: recListResultado
-                    width: listResultado.width; height: listResultado.height/6
-                    border.color: "grey"
-                    radius: 5
-                    clip: true
-                    Text {
-                        id: textListResultado
-                        text: textResultado
-                        width: recListResultado.width*0.7
-                        font.family: "Roboto"
-                        font.pixelSize: 20
-                        anchors.left: recListResultado.left
-                        anchors.leftMargin: 10
-                        anchors.verticalCenter: recListResultado.verticalCenter
-                    }
-                    Row{
-                        id: columnListResultado
-                        anchors.left: textListResultado.right
-                        anchors.verticalCenter: recListResultado.verticalCenter
-                        spacing: 3
+                ListView{
+                    id: listResultado
+                    anchors.fill: parent
+                    //anchors.top: paneResultado.top
+                    //  width: paneResultado.width
+                    //anchors.bottom: finalizarButton.top
+                    model: ListModel{}
+                    spacing: 2
+                    delegate: Rectangle{
+                      //  property int indexx: 0
+                        id: recListResultado
+                        width: listResultado.width; height: listResultado.height/4
+                        border.color: "grey"
+                        radius: 5
+                        clip: true
                         Text {
-                            id: textValorListResultado
-                            text: '<b>R$: ' + valorResultado + '</b>';
+                            id: textListResultado
+                            text: textResultado
+                            width: recListResultado.width*0.7
                             font.family: "Roboto"
                             font.pixelSize: 20
-                            anchors.verticalCenter: buttonExcluirResultado.verticalCenter
+                            anchors.left: recListResultado.left
+                            anchors.leftMargin: 10
+                            anchors.verticalCenter: recListResultado.verticalCenter
                         }
-                        Button{
-                            id: buttonExcluirResultado
-                            anchors.verticalCenter: columnListResultado.verticalCenter
-                            width: columnListResultado.width*0.45
-                            height: 60
-                            background: Rectangle{
-                                //border.color: "black"
-                                Image {
-                                    id: imageExcluirResultado
-                                    source: "qrc:/lixeira.png"
-                                    height: 35
-                                    anchors.horizontalCenter: parent.horizontalCenter
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    //anchors.left: parent.left
-                                    //anchors.leftMargin: columnListResultado.width*0.1
-                                    //anchors.top: parent.top
-                                    //anchors.topMargin: columnListResultado.height*0.05
-                                }
+                        Row{
+                            id: columnListResultado
+                            anchors.left: textListResultado.right
+                            anchors.verticalCenter: recListResultado.verticalCenter
+                            spacing: 3
+                            Text {
+                                id: textValorListResultado
+                                text: '<b>R$: ' + valorResultado + '</b>';
+                                font.family: "Roboto"
+                                font.pixelSize: 20
+                                anchors.verticalCenter: buttonExcluirResultado.verticalCenter
                             }
-                            onClicked: {
-                                var stop = 1
-                                var indexx = 0
-                                while(stop == 1){
-                                    if(listResultado.model.get(indexx).textResultado == textResultado){
-                                        stop = 0
-                                    }
-                                    else{
-                                        indexx++
+                            Button{
+                                id: buttonExcluirResultado
+                                anchors.verticalCenter: columnListResultado.verticalCenter
+                                width: columnListResultado.width*0.45
+                                height: 60
+                                background: Rectangle{
+                                    //border.color: "black"
+                                    Image {
+                                        id: imageExcluirResultado
+                                        source: "qrc:/lixeira.png"
+                                        height: 35
+                                        anchors.horizontalCenter: parent.horizontalCenter
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        //anchors.left: parent.left
+                                        //anchors.leftMargin: columnListResultado.width*0.1
+                                        //anchors.top: parent.top
+                                        //anchors.topMargin: columnListResultado.height*0.05
                                     }
                                 }
-
-                                listResultado.model.remove(indexx)
+                                onClicked: {
+                                    var stop = 1
+                                    var indexx = 0
+                                    while(stop == 1){
+                                        if(listResultado.model.get(indexx).textResultado == textResultado){
+                                            stop = 0
+                                        }
+                                        else{
+                                            indexx++
+                                        }
+                                    }
+                                    valorFinal = valorFinal - parseFloat(listResultado.model.get(indexx).valorResultado)
+                                    listResultado.model.remove(indexx)
+                                }
                             }
                         }
                     }
                 }
             }
+            Rectangle{
+                id: recPaneFinalizarResultado
+                height: paneResultado.height*0.3
+                width: paneResultado.width*0.962
+                anchors.top: recPaneResultado.bottom
+                //border.color: "black"
 
-            Button {
-                id: finalizarButton
-                anchors.bottom: parent.bottom
-                anchors.right: parent.right
-                height: parent.height *0.15
-                width: parent.width * 0.48
-                text: "Finalizar"
-                font.family: "Roboto"
-                focus: true
-                Material.background: "#4CAF50"
-                Material.foreground: "white"
-                font.pixelSize: 20
-            }
-            Button {
-                id: cancelarButton
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                height: parent.height *0.15
-                width: parent.width * 0.48
-                text: "Cancelar"
-                font.family: "Roboto"
-                focus: true
-                Material.background: "#ED3237"
-                Material.foreground: "white"
-                font.pixelSize: 20
+                Text {
+                    id: textValorFinalResultado
+                    //anchors.left: parent.left
+                    //anchors.leftMargin: parent.height*0.1
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.height*0.2
+                    font.family: "Roboto"
+                    font.pixelSize: 20
+                    text: "Valor Total <b>R$:  " + valorFinal + "</b>"
+
+                }
+
+                Button {
+                    id: finalizarButton
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    //anchors.rightMargin: 20
+                    height: paneResultado.height *0.15
+                    width: paneResultado.width * 0.45
+                    text: "Finalizar"
+                    font.family: "Roboto"
+                    focus: true
+                    Material.background: "#4CAF50"
+                    Material.foreground: "white"
+                    font.pixelSize: 20
+                }
+                Button {
+                    id: cancelarButton
+                    anchors.bottom: parent.bottom
+                    anchors.right: parent.right
+                    height: paneResultado.height *0.15
+                    width: paneResultado.width * 0.45
+                    text: "Cancelar"
+                    font.family: "Roboto"
+                    focus: true
+                    Material.background: "#ED3237"
+                    Material.foreground: "white"
+                    font.pixelSize: 20
+                }
             }
         }
-
     }
 }
