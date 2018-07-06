@@ -4,5 +4,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>Login.qml</file>
         <file>Pedido.qml</file>
+        <file>Pagamento.qml</file>
     </qresource>
 </RCC>

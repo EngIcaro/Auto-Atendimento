@@ -12,13 +12,33 @@ Item {
     property var valorFinal: 0
     ListModel{
         id: contactModel
-        ListElement { produto: "Executivo de Galeto"; valor: "13.00"; tipo: 1; }
-        ListElement { produto: "Executivo de Boi   ";    valor: "14.00"; tipo: 1}
-        ListElement { produto: "Executivo de Porco   ";    valor: "14.00"; tipo: 1}
-        ListElement { produto: "Executivo de Calabresa   ";    valor: "14.00"; tipo: 1}
-        ListElement { produto: "Coxa e SobreCoxa   ";    valor: "6.00"; tipo: 2}
+        ListElement { produto: "Executivo de Galeto"; valor: "13.00"; tipo: 1; chave: "Executivos"}
+        ListElement { produto: "Executivo de Boi   ";    valor: "14.00"; tipo: 1; chave: "Executivos"}
+        ListElement { produto: "Executivo de Porco   ";    valor: "14.00"; tipo: 1; chave: "Executivos"}
+        ListElement { produto: "Executivo de Calabresa   ";    valor: "14.00"; tipo: 1; chave: "Executivos"}
+        ListElement { produto: "Executivo de Galinha Guisada   ";    valor: "14.00"; tipo: 1; chave: "Executivos"}
+        ListElement { produto: "Coxa e SobreCoxa   ";    valor: "6.00"; tipo: 2; chave: "Carnes"}
+        ListElement { produto: "Calabresa de Frango";   valor: "2.50"; tipo: 2; chave: "Carnes"}
+        ListElement { produto: "Calabresa mista";   valor: "2.00"; tipo: 2; chave: "Carnes"}
+        ListElement { produto: "Coca-Cola 2l   ";    valor: "8.50"; tipo: 2; chave: "Bebidas"}
     }
 
+
+    Component {
+            id: sectionHeading
+            Rectangle {
+                width: listPedido.width
+                height: listPedido.height/10
+                color: "white"
+                Text {
+                    text: section
+                    font.bold: true
+                    font.family: "Roboto"
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 20
+                }
+            }
+        }
     Component {
         id: contactDelegate
         Rectangle {
@@ -207,7 +227,7 @@ Item {
                     anchors.right: popUpPedido1.Right
                     Text {
                         id: textRetirarPedido1
-                        text: qsTr("Deseja modificar o Acompanhamento?")
+                        text: qsTr("Deseja modificar o Acompanhamento? O acrescimo ou retirada não muda\no valor nem a quantidade total de comida")
                         font.family: "Roboto"
                         font.pixelSize: 20
                     }
@@ -353,7 +373,7 @@ Item {
                             aux++
                             if(aux==4){
                                 if(buttonCoxa.text == "Bem Passada"){
-                                    pedidofinal1 = pedidofinal1 + "Bem Passada" + "\n"
+                                    pedidofinal1 = pedidofinal1 + "Passada" + "\n"
                                 }
                                 else{
                                     pedidofinal1 = pedidofinal1 + "Coxa" + "\n"
@@ -362,7 +382,7 @@ Item {
                             }
                             else{
                                 if(buttonCoxa.text == "Bem Passada"){
-                                    pedidofinal1 = pedidofinal1 + "Bem Passada" + "\\"
+                                    pedidofinal1 = pedidofinal1 + "Passada" + "\\"
                                 }
                                 else{
                                     pedidofinal1 = pedidofinal1 + "Coxa" + "\\ "
@@ -579,11 +599,25 @@ Item {
                                 pedidofinal2 = spinPedido2.value + "x " + pedidofinal2
                                 var aux1 = 0
                                 var aux2 = 0
+                                var i = 0
+                                var charr = ""
                                 aux1 = parseFloat(auxvalor2)
                                 aux2 = parseFloat(spinPedido2.value)
                                 aux1 = aux1 * aux2
+
                                 auxvalor2 = aux1.toString()
-                                auxvalor2 = auxvalor2 + ".00"
+                                while(i < auxvalor2.length){
+                                    charr = auxvalor2.charAt(i)
+                                    if(charr == '.'){
+                                        auxvalor2 = auxvalor2 + "0"
+                                        break
+                                    }
+                                    i = i + 1
+                                }
+                                if(i == auxvalor2.length){
+                                    auxvalor2 = auxvalor2 + ".00"
+                                }
+
                                 listResultado.model.append({textResultado: pedidofinal2, valorResultado: auxvalor2})
                                 spinPedido2.value = 0
                                 valorFinal = valorFinal + aux1
@@ -631,6 +665,9 @@ Item {
                 anchors.fill: parent
                 model: contactModel
                 delegate: contactDelegate
+                section.property: "chave"
+                section.criteria: ViewSection.FullString
+                section.delegate: sectionHeading
             }
 
         }
@@ -674,7 +711,7 @@ Item {
                     model: ListModel{}
                     spacing: 2
                     delegate: Rectangle{
-                      //  property int indexx: 0
+                        //  property int indexx: 0
                         id: recListResultado
                         width: listResultado.width; height: listResultado.height/4
                         border.color: "grey"
@@ -690,51 +727,49 @@ Item {
                             anchors.leftMargin: 10
                             anchors.verticalCenter: recListResultado.verticalCenter
                         }
-                        Row{
-                            id: columnListResultado
+                        Text {
+                            id: textValorListResultado
+                            text: '<b>R$: ' + valorResultado + '</b>';
                             anchors.left: textListResultado.right
-                            anchors.verticalCenter: recListResultado.verticalCenter
-                            spacing: 3
-                            Text {
-                                id: textValorListResultado
-                                text: '<b>R$: ' + valorResultado + '</b>';
-                                font.family: "Roboto"
-                                font.pixelSize: 20
-                                anchors.verticalCenter: buttonExcluirResultado.verticalCenter
+                            anchors.leftMargin: textListResultado.width*0.04
+                            font.family: "Roboto"
+                            font.pixelSize: 20
+                            anchors.verticalCenter: buttonExcluirResultado.verticalCenter
+                        }
+                        Button{
+                            id: buttonExcluirResultado
+                            anchors.right: recListResultado.right
+                            anchors.rightMargin: recListResultado.width*0.001
+                            anchors.verticalCenter: textListResultado.verticalCenter
+                            width: recListResultado.width*0.1
+                            height: 60
+                            background: Rectangle{
+                                //border.color: "black"
+                                Image {
+                                    id: imageExcluirResultado
+                                    source: "qrc:/lixeira.png"
+                                    height: 35
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    //anchors.left: parent.left
+                                    //anchors.leftMargin: columnListResultado.width*0.1
+                                    //anchors.top: parent.top
+                                    //anchors.topMargin: columnListResultado.height*0.05
+                                }
                             }
-                            Button{
-                                id: buttonExcluirResultado
-                                anchors.verticalCenter: columnListResultado.verticalCenter
-                                width: columnListResultado.width*0.45
-                                height: 60
-                                background: Rectangle{
-                                    //border.color: "black"
-                                    Image {
-                                        id: imageExcluirResultado
-                                        source: "qrc:/lixeira.png"
-                                        height: 35
-                                        anchors.horizontalCenter: parent.horizontalCenter
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        //anchors.left: parent.left
-                                        //anchors.leftMargin: columnListResultado.width*0.1
-                                        //anchors.top: parent.top
-                                        //anchors.topMargin: columnListResultado.height*0.05
+                            onClicked: {
+                                var stop = 1
+                                var indexx = 0
+                                while(stop == 1){
+                                    if(listResultado.model.get(indexx).textResultado == textResultado){
+                                        stop = 0
+                                    }
+                                    else{
+                                        indexx++
                                     }
                                 }
-                                onClicked: {
-                                    var stop = 1
-                                    var indexx = 0
-                                    while(stop == 1){
-                                        if(listResultado.model.get(indexx).textResultado == textResultado){
-                                            stop = 0
-                                        }
-                                        else{
-                                            indexx++
-                                        }
-                                    }
-                                    valorFinal = valorFinal - parseFloat(listResultado.model.get(indexx).valorResultado)
-                                    listResultado.model.remove(indexx)
-                                }
+                                valorFinal = valorFinal - parseFloat(listResultado.model.get(indexx).valorResultado)
+                                listResultado.model.remove(indexx)
                             }
                         }
                     }
@@ -773,6 +808,9 @@ Item {
                     Material.background: "#4CAF50"
                     Material.foreground: "white"
                     font.pixelSize: 20
+                    onClicked: {
+                        stackView.push(telaPagamento)
+                    }
                 }
                 Button {
                     id: cancelarButton
@@ -786,6 +824,12 @@ Item {
                     Material.background: "#ED3237"
                     Material.foreground: "white"
                     font.pixelSize: 20
+                    onClicked: {
+                        listResultado.model.clear()
+                        valorFinal = 0
+                        stackView.pop()
+
+                    }
                 }
             }
         }

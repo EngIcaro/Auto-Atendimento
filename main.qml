@@ -24,4 +24,8 @@ ApplicationWindow {
         Pedido{}
 
     }
+    Component{
+        id: telaPagamento
+        Pagamento{}
+    }
 }
